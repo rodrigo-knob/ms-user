@@ -1,17 +1,11 @@
 package br.com.fiap.msusuario.application.controller;
 
-import br.com.fiap.msusuario.application.controller.request.UserAuthRequest;
+import br.com.fiap.msusuario.application.controller.request.LoginRequest;
 import br.com.fiap.msusuario.application.controller.request.UserRequest;
-import br.com.fiap.msusuario.application.controller.response.UserResponse;
-import br.com.fiap.msusuario.domain.entity.User;
-import br.com.fiap.msusuario.domain.security.authentication.TokenService;
-import br.com.fiap.msusuario.domain.security.userdetails.UserDetailsImpl;
-import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
+import br.com.fiap.msusuario.application.controller.response.LoginResponse;
+import br.com.fiap.msusuario.application.controller.response.UserReponse;
+import br.com.fiap.msusuario.domain.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,35 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class UserController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository repository;
-    private final TokenService tokenService;
+    private final UserService userService;
 
-    public UserController(AuthenticationManager authenticationManager, UserRepository repository, TokenService tokenService) {
-        this.authenticationManager = authenticationManager;
-        this.repository = repository;
-        this.tokenService = tokenService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserAuthRequest data) {
-        UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        Authentication auth = this.authenticationManager.authenticate(usernamePassword);
-
-        String token = tokenService.generateToken((UserDetailsImpl) auth.getPrincipal());
-
-        return ResponseEntity.ok(new UserResponse(token));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest data) {
+        return ResponseEntity.ok(userService.authenticateUser(data));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody UserRequest data) {
-        if (repository.findByLogin(data.login()).isPresent()) return ResponseEntity.badRequest().build();
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role());
-
-        repository.save(newUser);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserReponse> register(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.registerUser(userRequest));
     }
 }

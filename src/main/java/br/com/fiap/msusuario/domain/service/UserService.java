@@ -1,11 +1,12 @@
 package br.com.fiap.msusuario.domain.service;
 
-import br.com.fiap.msusuario.application.controller.request.UserAuthRequest;
+import br.com.fiap.msusuario.application.controller.request.LoginRequest;
 import br.com.fiap.msusuario.application.controller.request.UserRequest;
-import br.com.fiap.msusuario.application.controller.response.UserResponse;
+import br.com.fiap.msusuario.application.controller.response.LoginResponse;
+import br.com.fiap.msusuario.application.controller.response.UserReponse;
 
 public interface UserService {
-    UserResponse registerUser(UserRequest userRequest);
+    UserReponse registerUser(UserRequest userRequest);
 
-    String authenticateUser(UserAuthRequest loginRequest);
+    LoginResponse authenticateUser(LoginRequest loginRequest);
 }
