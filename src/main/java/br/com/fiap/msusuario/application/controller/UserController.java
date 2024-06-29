@@ -1,7 +1,7 @@
-package br.com.fiap.msusuario.controller;
+package br.com.fiap.msusuario.application.controller;
 
-import br.com.fiap.msusuario.entity.User;
-import br.com.fiap.msusuario.repository.UserRepository;
+import br.com.fiap.msusuario.domain.entity.User;
+import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

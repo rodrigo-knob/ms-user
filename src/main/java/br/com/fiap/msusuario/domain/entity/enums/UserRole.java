@@ -1,4 +1,4 @@
-package br.com.fiap.msusuario.entity.enums;
+package br.com.fiap.msusuario.domain.entity.enums;
 
 import lombok.Getter;
 

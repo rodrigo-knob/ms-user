@@ -1,11 +1,11 @@
-package br.com.fiap.msusuario.controller;
+package br.com.fiap.msusuario.application.controller;
 
-import br.com.fiap.msusuario.entity.User;
-import br.com.fiap.msusuario.repository.UserRepository;
-import br.com.fiap.msusuario.request.UserAuthRequest;
-import br.com.fiap.msusuario.request.UserRequest;
-import br.com.fiap.msusuario.response.UserResponse;
-import br.com.fiap.msusuario.security.TokenService;
+import br.com.fiap.msusuario.domain.entity.User;
+import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
+import br.com.fiap.msusuario.application.controller.request.UserAuthRequest;
+import br.com.fiap.msusuario.application.controller.request.UserRequest;
+import br.com.fiap.msusuario.application.controller.response.UserResponse;
+import br.com.fiap.msusuario.domain.security.TokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

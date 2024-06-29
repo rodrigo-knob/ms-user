@@ -1,6 +1,6 @@
-package br.com.fiap.msusuario.security;
+package br.com.fiap.msusuario.domain.security;
 
-import br.com.fiap.msusuario.repository.UserRepository;
+import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

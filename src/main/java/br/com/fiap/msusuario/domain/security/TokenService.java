@@ -1,6 +1,6 @@
-package br.com.fiap.msusuario.security;
+package br.com.fiap.msusuario.domain.security;
 
-import br.com.fiap.msusuario.entity.User;
+import br.com.fiap.msusuario.domain.entity.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

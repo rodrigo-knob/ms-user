@@ -1,6 +1,6 @@
-package br.com.fiap.msusuario.repository;
+package br.com.fiap.msusuario.infrastructure.repository;
 
-import br.com.fiap.msusuario.entity.User;
+import br.com.fiap.msusuario.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 

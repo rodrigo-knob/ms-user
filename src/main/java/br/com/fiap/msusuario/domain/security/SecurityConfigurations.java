@@ -1,4 +1,4 @@
-package br.com.fiap.msusuario.security;
+package br.com.fiap.msusuario.domain.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

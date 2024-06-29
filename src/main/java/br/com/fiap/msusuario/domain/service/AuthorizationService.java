@@ -1,6 +1,6 @@
-package br.com.fiap.msusuario.service;
+package br.com.fiap.msusuario.domain.service;
 
-import br.com.fiap.msusuario.repository.UserRepository;
+import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
