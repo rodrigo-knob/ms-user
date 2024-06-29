@@ -16,6 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -30,9 +34,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = recoverToken(request);
-        if (token != null) {
-            String login = tokenService.validateToken(token);
+        Optional<String> token = recoverToken(request);
+
+        if (token.isPresent()) {
+            String login = tokenService.validateToken(token.get());
             User user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("User not found"));
             UserDetails userDetails = new UserDetailsImpl(user);
 
@@ -42,12 +47,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null) {
-            return null;
+    private Optional<String> recoverToken(HttpServletRequest request) {
+        Optional<String> authHeader = ofNullable(request.getHeader("Authorization")) ;
+        if (authHeader.isPresent()) {
+            return authHeader.map(a -> a.replace("Bearer ", ""));
         }
-        return authHeader.replace("Bearer ", "");
+        return empty();
     }
 }
 
