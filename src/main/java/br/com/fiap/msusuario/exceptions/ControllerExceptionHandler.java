@@ -5,14 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.Instant;
+
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(WrongCredentials.class)
-    ResponseEntity<StandardError> handleWrongCredentials(WrongCredentials e, HttpServletRequest request) {
+    @ExceptionHandler(BadCredentialsException.class)
+    ResponseEntity<StandardError> handleWrongCredentials(BadCredentialsException e, HttpServletRequest request) {
         StandardError error = StandardError.builder()
-                .status(404)
-                .error("Incorrect credentials")
+                .timestamp(Instant.now())
+                .status(401)
+                .error("Username or password are incorrect")
                 .message(e.getMessage())
                 .path(request.getRequestURI())
                 .build();

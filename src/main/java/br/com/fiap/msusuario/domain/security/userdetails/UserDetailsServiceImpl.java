@@ -1,10 +1,11 @@
 package br.com.fiap.msusuario.domain.security.userdetails;
 
 import br.com.fiap.msusuario.domain.entity.User;
-import br.com.fiap.msusuario.exceptions.WrongCredentials;
+import br.com.fiap.msusuario.exceptions.BadCredentialsException;
 import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +18,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = repository.findByLogin(username).orElseThrow(() -> new WrongCredentials("Login or password incorrect"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = repository.findByLogin(username).orElseThrow(() -> new BadCredentialsException("User not found"));
         return new UserDetailsImpl(user);
     }
 }

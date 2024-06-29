@@ -4,6 +4,7 @@ import br.com.fiap.msusuario.application.controller.request.LoginRequest;
 import br.com.fiap.msusuario.application.controller.request.UserRequest;
 import br.com.fiap.msusuario.application.controller.response.LoginResponse;
 import br.com.fiap.msusuario.application.controller.response.UserReponse;
+import br.com.fiap.msusuario.application.documentation.UserControllerDoc;
 import br.com.fiap.msusuario.domain.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class UserController {
+public class UserController implements UserControllerDoc {
 
     private final UserService userService;
 
@@ -22,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest data) {
-        return ResponseEntity.ok(userService.authenticateUser(data));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(userService.authenticateUser(loginRequest));
     }
 
     @PostMapping("/register")
