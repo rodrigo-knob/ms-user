@@ -6,6 +6,7 @@ import br.com.fiap.msusuario.application.controller.response.LoginResponse;
 import br.com.fiap.msusuario.application.controller.response.UserReponse;
 import br.com.fiap.msusuario.application.documentation.UserControllerDoc;
 import br.com.fiap.msusuario.domain.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class UserController implements UserControllerDoc {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserReponse> register(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserReponse> register(@Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.registerUser(userRequest));
     }
 }
