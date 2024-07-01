@@ -2,6 +2,7 @@ package br.com.fiap.msusuario.domain.security.authentication;
 
 import br.com.fiap.msusuario.domain.entity.User;
 import br.com.fiap.msusuario.domain.security.userdetails.UserDetailsImpl;
+import br.com.fiap.msusuario.exceptions.UserNotFoundException;
 import br.com.fiap.msusuario.infrastructure.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (token.isPresent()) {
             String login = tokenService.validateToken(token.get());
-            User user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            User user = userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("User not found"));
             UserDetails userDetails = new UserDetailsImpl(user);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
@@ -48,7 +48,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private Optional<String> recoverToken(HttpServletRequest request) {
-        Optional<String> authHeader = ofNullable(request.getHeader("Authorization")) ;
+        Optional<String> authHeader = ofNullable(request.getHeader("Authorization"));
         if (authHeader.isPresent()) {
             return authHeader.map(a -> a.replace("Bearer ", ""));
         }

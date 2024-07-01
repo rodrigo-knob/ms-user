@@ -5,8 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -51,5 +51,18 @@ public class ControllerExceptionHandler {
                 )
                 .toList();
         return ResponseEntity.badRequest().body(validationErrors);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    ResponseEntity<StandardError> handleUserNotFoundException(UserNotFoundException e, HttpServletRequest request) {
+        StandardError error = StandardError.builder()
+                .timestamp(Instant.now())
+                .status(NOT_FOUND.value())
+                .error("User not found")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(NOT_FOUND.value()).body(error);
     }
 }
