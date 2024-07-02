@@ -31,11 +31,9 @@ public class SecurityConfigurations {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers( "/user/**").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/user/{login}").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/user").permitAll()
-                        .requestMatchers("/swagger-ui/index.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/{login}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui/index.html").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
